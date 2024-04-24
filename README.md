@@ -1,2 +1,2 @@
 # Repositorio-Python
- Alguns códigos em Python
+ Local direcionado para repositório de códigos de Python
