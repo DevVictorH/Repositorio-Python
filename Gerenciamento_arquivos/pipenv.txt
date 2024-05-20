@@ -1,0 +1,26 @@
+
+# pipenv é uma ferramenta de gerenciamento de pacotes,
+# fazendo com que adicione e remova automaticamente pacotes
+# do arquivo pipfile
+
+# Instalar pipenv
+pip install pipenv
+
+# Instalar pacotes com pipenv
+pipenv install nome_do_pacote
+
+# Desinstalar pacotes com pipenv
+pipenv uninstall nome_do_pacote
+
+# Gera um arquivo de lock
+pipenv lock
+
+# Lista todas as dependencias dos pacotes
+pipenv graph
+
+# Desinstala as dependencias
+pipenv clean
+
+
+
+

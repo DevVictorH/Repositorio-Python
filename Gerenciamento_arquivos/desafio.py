@@ -1,4 +1,3 @@
-
 import textwrap
 from abc import ABC, abstractclassmethod, abstractproperty
 from datetime import datetime
@@ -35,7 +34,7 @@ class Cliente:
 
     def realizar_transacao(self, conta, transacao):
         if len(conta.historico.transacoes_do_dia()) >= 2:
-            print("\nVocê excedeu o número de transações permitidas para hoje!")
+            print("\n@@@ Você excedeu o número de transações permitidas para hoje! @@@")
             return
 
         transacao.registrar(conta)
@@ -89,7 +88,7 @@ class Conta:
         excedeu_saldo = valor > saldo
 
         if excedeu_saldo:
-            print("\nOperação falhou! Você não tem saldo suficiente.")
+            print("\n@@@ Operação falhou! Você não tem saldo suficiente. @@@")
 
         elif valor > 0:
             self._saldo -= valor
@@ -97,7 +96,7 @@ class Conta:
             return True
 
         else:
-            print("\nOperação falhou! O valor informado é inválido.")
+            print("\n@@@ Operação falhou! O valor informado é inválido. @@@")
 
         return False
 
@@ -106,7 +105,7 @@ class Conta:
             self._saldo += valor
             print("\n=== Depósito realizado com sucesso! ===")
         else:
-            print("\nOperação falhou! O valor informado é inválido.")
+            print("\n@@@ Operação falhou! O valor informado é inválido. @@@")
             return False
 
         return True
@@ -135,10 +134,10 @@ class ContaCorrente(Conta):
         excedeu_saques = numero_saques >= self._limite_saques
 
         if excedeu_limite:
-            print("\nOperação falhou! O valor do saque excede o limite.")
+            print("\n@@@ Operação falhou! O valor do saque excede o limite. @@@")
 
         elif excedeu_saques:
-            print("\nOperação falhou! Número máximo de saques excedido.")
+            print("\n@@@ Operação falhou! Número máximo de saques excedido. @@@")
 
         else:
             return super().sacar(valor)
@@ -166,7 +165,7 @@ class Historico:
             {
                 "tipo": transacao.__class__.__name__,
                 "valor": transacao.valor,
-                "data": datetime.utcnow().strftime("%d-%m-%Y %H:%M:%S"),
+                "data": datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
             }
         )
 
@@ -243,15 +242,16 @@ def log_transacao(func):
 def menu():
     menu = """\n
     ================ MENU ================
-    1) Depositar
-    2) Sacar
-    3) Extrato
-    4) Novo usuário
-    5) Nova conta
-    6) Listar contas
-    7) Sair
+    [d]\tDepositar
+    [s]\tSacar
+    [e]\tExtrato
+    [nc]\tNova conta
+    [lc]\tListar contas
+    [nu]\tNovo usuário
+    [q]\tSair
     => """
-    return int(input(menu))
+
+    return input(textwrap.dedent(menu))
 
 
 def filtrar_cliente(cpf, clientes):
@@ -261,7 +261,7 @@ def filtrar_cliente(cpf, clientes):
 
 def recuperar_conta_cliente(cliente):
     if not cliente.contas:
-        print("\nCliente não possui conta!")
+        print("\n@@@ Cliente não possui conta! @@@")
         return
 
     # FIXME: não permite cliente escolher a conta
@@ -274,7 +274,7 @@ def depositar(clientes):
     cliente = filtrar_cliente(cpf, clientes)
 
     if not cliente:
-        print("\n@Cliente não encontrado!")
+        print("\n@@@ Cliente não encontrado! @@@")
         return
 
     valor = float(input("Informe o valor do depósito: "))
@@ -293,7 +293,7 @@ def sacar(clientes):
     cliente = filtrar_cliente(cpf, clientes)
 
     if not cliente:
-        print("\nCliente não encontrado!")
+        print("\n@@@ Cliente não encontrado! @@@")
         return
 
     valor = float(input("Informe o valor do saque: "))
@@ -312,7 +312,7 @@ def exibir_extrato(clientes):
     cliente = filtrar_cliente(cpf, clientes)
 
     if not cliente:
-        print("\nCliente não encontrado!")
+        print("\n@@@ Cliente não encontrado! @@@")
         return
 
     conta = recuperar_conta_cliente(cliente)
@@ -324,7 +324,7 @@ def exibir_extrato(clientes):
     tem_transacao = False
     for transacao in conta.historico.gerar_relatorio():
         tem_transacao = True
-        extrato += f"\n{transacao['data']}\n{transacao['tipo']}:\n\tR$ {transacao['valor']:.2f}"
+        extrato += f'\n{transacao["tipo"]}:\n\tR$ {transacao["valor"]:.2f}'
 
     if not tem_transacao:
         extrato = "Não foram realizadas movimentações"
@@ -340,7 +340,7 @@ def criar_cliente(clientes):
     cliente = filtrar_cliente(cpf, clientes)
 
     if cliente:
-        print("\nJá existe cliente com esse CPF!")
+        print("\n@@@ Já existe cliente com esse CPF! @@@")
         return
 
     nome = input("Informe o nome completo: ")
@@ -364,9 +364,10 @@ def criar_conta(numero_conta, clientes, contas):
     cliente = filtrar_cliente(cpf, clientes)
 
     if not cliente:
-        print("\nCliente não encontrado, fluxo de criação de conta encerrado!")
+        print("\n@@@ Cliente não encontrado, fluxo de criação de conta encerrado! @@@")
         return
 
+    # NOTE: O valor padrão de limite de saques foi alterado para 50 saques
     conta = ContaCorrente.nova_conta(
         cliente=cliente, numero=numero_conta, limite=500, limite_saques=50
     )
@@ -389,31 +390,32 @@ def main():
     while True:
         opcao = menu()
 
-        if opcao == 1:
+        if opcao == "d":
             depositar(clientes)
 
-        elif opcao == 2:
+        elif opcao == "s":
             sacar(clientes)
 
-        elif opcao == 3:
+        elif opcao == "e":
             exibir_extrato(clientes)
 
-        elif opcao == 4:
+        elif opcao == "nu":
             criar_cliente(clientes)
 
-        elif opcao == 5:
+        elif opcao == "nc":
             numero_conta = len(contas) + 1
             criar_conta(numero_conta, clientes, contas)
 
-        elif opcao == 6:
+        elif opcao == "lc":
             listar_contas(contas)
 
-        elif opcao == 7:
-            print("Saindo...")
+        elif opcao == "q":
             break
 
         else:
-            print("\nOperação inválida, por favor selecione novamente a operação desejada.")
+            print(
+                "\n@@@ Operação inválida, por favor selecione novamente a operação desejada. @@@"
+            )
 
 
 main()

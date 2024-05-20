@@ -1,0 +1,19 @@
+
+# Assim como o pipenv, o poetry é uam ferramente de gerenciamento de pacotes
+
+#comandos:
+-pip install poetry
+
+# Criar novo pacote
+poetry new project
+
+# Entrar na pasta do projeto
+cd myproject
+
+# Adicionar uma dependencias
+poetry add numpy
+
+# Remover uma dependencia
+poetry remove numpy
+
+

@@ -1,0 +1,11 @@
+
+# Criar um ambiente virtual
+
+# Um ambiente virtual vem vazio sem nenhum pacote
+
+# Colocar esses comando no terminal pra criar um ambiente virtual
+python -m venv .env
+source .env/bin/activate
+
+# Desativar o ambiente virtual
+desactivate

@@ -1,0 +1,15 @@
+
+# Instalar um pacote
+pip install nome_do_pacote
+
+# Desinstalar um pacote
+pip uninstall nome_do_pacote
+
+# listar os pacotes
+pip list
+
+# Atualizar os pacotes
+pip install --upgrade nome_do_pacote
+
+# Procurar pacotes
+pip search nome_do_pacote (não existe mais)

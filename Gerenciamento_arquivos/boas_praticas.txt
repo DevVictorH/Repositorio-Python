@@ -1,0 +1,17 @@
+#Inspeção de codigo
+# flake8 serve para apontar aonde tem desvio no codigo
+-pip install flake8
+-flake8 nome_arquivo.py 
+
+
+#formatação de codigo
+# black é uma ferramenta de formatação de codigo seguindo a pep8
+-pip install black
+-black nome_arquivo.py
+
+
+#Organização de imports
+# Isort é uma ferramenta para organizar imports alfabeticamente
+-pip install isort
+-isort nome_arquivo.py
+
