@@ -4,8 +4,9 @@
 # Um ambiente virtual vem vazio sem nenhum pacote
 
 # Colocar esses comando no terminal pra criar um ambiente virtual
-python -m venv .env
+py -m venv .env
 source .env/bin/activate
+.env/Scripts/Activate.ps1 - usar este comando para ativar o ambiente virtual
 
 # Desativar o ambiente virtual
 desactivate
